@@ -1,18 +1,22 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="container mt-4">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="{% url 'expenses'%}">Expenses</a>
-      </li>
-      <li class="breadcrumb-item active" aria-current="page">Add Expenses</li>
-    </ol>
-  </nav>
+  <div class="row">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'expenses'%}">Expenses</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Add Expenses</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-body">
-      <form action="{% url 'add-expenses' %}" method="post">
+      <form action="{% url 'expense-edit' expense.id %}" method="post">
         {% include 'partials/_messages.html'%} {% csrf_token %}
         <div class="form-group">
           <label for="">Amount</label>
@@ -36,6 +40,9 @@
           <label for="">Category</label>
           <select class="form-control" name="category">
             {% for category in categories%}
+            <option selected name="category" value="{{values.category}}"
+              >{{values.category}}</option
+            >
             <option name="category" value="{{category.name}}"
               >{{category.name}}</option
             >
@@ -47,6 +54,7 @@
           <label for="">Date of Expense</label>
           <input
             type="date"
+            value="{{values.date |date:'Y-m-d' }}"
             class="form-control form-control-sm"
             name="expense_date"
           />
@@ -54,8 +62,8 @@
 
         <input
           type="submit"
-          value="Submit"
-          class="btn btn-primary btn-primary-sm"
+          value="Save"
+          class="btn btn-secondary btn-secondary-sm"
         />
       </form>
     </div>
